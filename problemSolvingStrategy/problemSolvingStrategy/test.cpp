@@ -1,77 +1,117 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<stack>
 using namespace std;
 
+
+int findIndex(vector<int>y, int value) {
+	for (int i = 0; i < y.size(); i++)
+	{
+		if (y[i] == value) { return i; }
+	}
+	return -1;
+}
 
 
 int main()
 {
-
-    int n=100000;
-    //cin >> n;
-
-    vector<int> X(n);
-    vector<int> Y(n);
-
-    /*
-    for (int i = 0; i < n; i++) { cin >> X[i]; }
-    for (int i = 0; i < n; i++) { cin >> Y[i]; }
-    */
-
-    for (int i = 0; i < n; i++) { X[i]=i; }
-    for (int i = 0; i < n; i++) { Y[i]=i; }
+	//input===============
+	int n;
+	cin >> n;
 
 
-    // y 좌표를 기준으로 x 좌표를 내림차순 정렬
-    vector<pair<int, int>> sortedXY;
-    for (int i = 0; i < n; i++) {
-        sortedXY.push_back({ X[i], Y[i] });
-    }
+	vector<int> x(n);
+	vector<int> y(n);
 
 
-    //좀 더 확인
-    sort
-    (sortedXY.begin(), sortedXY.end(),
-        [](const pair<int, int>& a, const pair<int, int>& b)
-        {    return a.second > b.second || (a.second == b.second && a.first > b.first);    }
-    );
-
-
-    //x좌표값만 저장
-    vector<int> sorted_x;
-    for (const pair<int, int>& XY : sortedXY)
-    {
-        sorted_x.push_back(XY.first);
-    }
-
-
-    long result = 0;
-
-
-    for (int i = 0; i < sorted_x.size() - 1; i++)
-    {
-        int startX = sorted_x[i];
-        int maxLeng = 0;
-
-        for (int k = i + 1; k < n; k++)
-        {
-            if (maxLeng < abs(sorted_x[i] - sorted_x[k]))
-            {
-                maxLeng = abs(sorted_x[i] - sorted_x[k]);
-            }
-
-        }
-
-        cout << "maxLeng=" << maxLeng << " ";
-        result += maxLeng;
-
-    }
-
-    cout << result;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x[i];
+	}
+	for (int i = 0; i < n; i++)
+	{
+		cin >> y[i];
+	}
 
 
 
-    return 0;
+
+	//check===============
+
+	int result = 0;
+	int max = 0;
+	int selectY = -1;
+
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << "i=" << i << " ";
+		max = 0;
+
+		selectY = -1;
+
+		//right===========
+		for (int j = i + 1; j < n; j++)
+		{
+
+			if (y[j] < y[i])
+			{
+				selectY = j;
+			}
+			else { break; }
+		}
+
+
+
+
+		//stack에 남아있는 2개의 수의 차를 구하면 max이다.
+		if (selectY != -1)
+		{
+
+			//stack.pop()에 해당하는 값의 Y에서 인덱스 값을 구한다.
+			int firstIndex = selectY;
+			int secondIndex = i;
+			max = abs(x[firstIndex] - x[secondIndex]);
+
+		}
+
+
+		selectY = -1;
+		//left===========
+		for (int k = i - 1; k > 0; k--)
+		{
+			if (y[k] < y[i])
+			{
+				selectY = k;
+			}
+			else { break; }
+		}
+
+
+		//stack에 남아있는 2개의 수의 차를 구하면 max이다.
+		if (selectY != -1)
+		{
+			//stack.pop()에 해당하는 값의 Y에서 인덱스 값을 구한다.
+			int firstIndex = selectY;
+			int secondIndex = i;
+
+			if (abs(x[firstIndex] - x[secondIndex]) > max)
+			{
+				max = abs(x[firstIndex] - x[secondIndex]);
+			}
+		}
+
+
+
+		cout << "max=" << max << " \n";
+		result += max;
+
+	}
+
+
+
+	cout << "\nresult=" << result;
+
+
 }

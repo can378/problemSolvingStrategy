@@ -1,124 +1,83 @@
 #include<iostream>
-#include<algorithm>
 #include<vector>
-#include<stack>
 using namespace std;
 
-vector<int> x;
-vector<int> y;
-
-int findIndex(int value) {
-	for (int i = 0; i < y.size(); i++)
-	{
-		if (y[i] == value) { return i; }
-	}
-	return -1;
-}
+#define SIZE 200000
 
 
 int main()
 {
-	//input
-	int n;
+	ios_base::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
+
+	//input===============
+	long n;
 	cin >> n;
 
 
-	int num;
-	for (int i = 0; i < n; i++)
+	vector<long long> x(SIZE);
+	vector<long long> y(SIZE);
+
+
+	for (long i = 0; i < n; i++)
+	{	cin>>x[i];	}
+	for (long i = 0; i < n; i++)
+	{	cin>>y[i];	}
+
+
+
+
+	//check===============
+
+	long long result = 0;
+	long long max = 0;
+	long selectY = -1;
+
+
+	for (long i = 0; i < n; i++)
 	{
-		cin >> num;
-		x.push_back(num);
-	}
-	for (int i = 0; i < n; i++)
-	{
-		cin >> num;
-		y.push_back(num);
-	}
+		max = 0;
 
-
-
-
-	//check
-	stack<int>stack;
-
-	int result = 0;
-	int max = 0;
-
-
-	for (int i = 0; i < n; i++)
-	{
-		stack.push(y[i]);
+		selectY = -1;
 
 		//right===========
-		for (int j = i + 1; j < n; j++)
+		for (long j = i + 1; j < n; j++)
 		{
-
 			if (y[j] < y[i])
-			{
-				if (stack.size() != 1) {
-					stack.pop();
-				}
-				stack.push(y[j]);
-			}
+			{	selectY = j;	}
 			else { break; }
-
-
 		}
 
-		//stack에 남아있는 2개의 수의 차를 구하면 max이다.
-		if (stack.size() ==2) 
-		{
-			//stack.pop()에 해당하는 값의 Y에서 인덱스 값을 구한다.
-			int firstIndex=findIndex(stack.top());
-			stack.pop();
-			int secondIndex=findIndex(stack.top());
-			stack.pop();
-			max = abs(x[firstIndex]-x[secondIndex]);
+		if (selectY!=-1)
+		{	max = abs(x[selectY] - x[i]);		}
 
-		}
-		else { max = 0; }
+		selectY = -1;
 
-
-
-		while (stack.size() != 0) { stack.pop(); }
 
 		//left===========
-		for (int k = 0; k < i; k++)
+		for (long k = i-1; k >0; k--)
 		{
 			if (y[k] < y[i])
-			{
-				if (stack.size() != 1) {
-					stack.pop();
-				}
-				stack.push(y[k]);
-			}
+			{	selectY = k;	}
 			else { break; }
-
 		}
+
+
 		//stack에 남아있는 2개의 수의 차를 구하면 max이다.
-		if (stack.size() == 2)
+		if (selectY!=-1)
 		{
-			//stack.pop()에 해당하는 값의 Y에서 인덱스 값을 구한다.
-			int firstIndex = findIndex(stack.top());
-			stack.pop();
-			int secondIndex = findIndex(stack.top());
-			stack.pop();
-
-			if (abs(x[firstIndex] - x[secondIndex]) > max) 
-			{ max = abs(x[firstIndex] - x[secondIndex]); }
-			
-
+			if (abs(x[selectY] - x[i]) > max)
+			{	max = abs(x[selectY] - x[i]);		}
 		}
-		else { max = 0; }
 
-
-		cout << "max=" << max << " ";
 		result += max;
 
-		while (stack.size() != 0) { stack.pop(); }
 	}
 
-	cout <<"\nresult="<< result;
+
+
+	cout << result<<"\n";
 
 
 }
