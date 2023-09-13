@@ -33,5 +33,11 @@
     <ClCompile Include="과제2-하늘다람쥐3.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="과제2-하늘다람쥐4.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="과제3-퍼즐.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
