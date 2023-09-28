@@ -1,13 +1,17 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<vector>
 using namespace std;
 
-int n, M;
-vector<int>days;
+
+
+long long M;
+int n;
+vector< long long>days;
 
 
 
-int price(int from, int to) 
+long long price(int from, int to) 
 {
 	if (from<0 || to >=n || from>=n || to<0 || from>to) { return 0; }
 	return days[to] - days[from] + 1 + M;
@@ -15,16 +19,20 @@ int price(int from, int to)
 
 int main() {
 
+	freopen("input.txt", "r", stdin);
+	
+
 	cin >> n >> M;
 
 	for (int i = 0; i < n; i++)
 	{
-		int num;
+		long long num;
 		cin >> num;
 		days.push_back(num);
 	}
 
-	int result = 0;
+
+	long long result = 0;
 
 
 
@@ -35,19 +43,16 @@ int main() {
 	int i = n - 1;//뒤에서 첫번째꺼
 	int cutIndex = i;
 
-	int case1 = 0;
-	int case2 = 0;
+	long long case1 = 0;
+	long long case2 = 0;
 
 	
 
 	while (i >= 0)
 	{
-		//cout << "result=" << result<<"\n";
-		//cout << "i=" << i << " cutIndex=" << cutIndex << "\n";
+
 		case1 = price(0, cutIndex) + price(cutIndex + 1, i);
 		case2 = price(0, cutIndex - 1) + price(cutIndex, i);
-
-		//cout << "case1=" << case1 << " case2=" << case2 << "\n";
 
 		if (i<= 1) 
 		{
@@ -56,7 +61,6 @@ int main() {
 		}
 
 
-		
 		if (case1>case2)
 		{
 			result += price(cutIndex,i);
@@ -70,11 +74,10 @@ int main() {
 		{
 			cutIndex--;
 		}
-		//cout << "result="<<result << "\n\n";
 
 	}
 
 	
-	cout << "\n" << result << "\n";
+	cout <<"\nresult="<< result << "\n";
 	
 }
