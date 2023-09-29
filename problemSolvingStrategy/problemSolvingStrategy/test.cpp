@@ -1,26 +1,37 @@
 #include <iostream>
-#include <cmath>
 #include <vector>
 
 using namespace std;
+vector<int> elements;
+vector<int> currentSubset;
 
-int main()
+// 부분집합
+void generateSubsets(int startIndex, int k) 
 {
-    int n, M;
-    vector<int> v;
-    long long int answer = 0;
+    if (k == 0) {
+        // k-부분집합 출력
+        for (size_t i = 0; i < currentSubset.size(); ++i) 
+        {   printf("%02d", currentSubset[i]);   }
+        cout << " ";
+        return;
+    }
 
-    cin >> n >> M;
-    for (int i = 0; i < n; i++)
+    // k-부분집합을 포함한 k+1 부분집합 생성
+    for (int i = startIndex; i < elements.size(); ++i) 
     {
-        int date;
-        cin >> date;
-        v.push_back(date);
+        currentSubset.push_back(elements[i]);
+        generateSubsets(i + 1, k - 1);
+        currentSubset.pop_back();
     }
-    answer = min(v[1] - v[0] + 1 + M, 2 * (M + 1));
-    for (int i = 1; i < n - 1; i++)
-    {
-        answer += min(v[i + 1] - v[i], M + 1);
-    }
-    cout << answer;
+}
+
+int main() 
+{
+    int n, k;
+    cin >> n >> k;
+
+    for (int i = 0; i <= n; ++i) 
+    {  elements.push_back(i);}
+
+    generateSubsets(1, k);
 }
